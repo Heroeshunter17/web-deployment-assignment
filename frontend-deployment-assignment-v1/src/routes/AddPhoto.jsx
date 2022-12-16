@@ -10,7 +10,9 @@ const AddPhoto = () => {
 
   const addPhoto = (e) => {
     e.preventDefault();
-    fetch("https://gallery-app-server.vercel.app/photos", {
+
+    
+    fetch("http://localhost:3001/photos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -23,9 +25,11 @@ const AddPhoto = () => {
         secret: secret
       })
     })
-    .then((rsp) => {rsp.json();
+    .then((res) => {res.json();
       navigate("/photos")});
+    // TODO: answer here
   };
+
   return (
     <>
       <div className="container">

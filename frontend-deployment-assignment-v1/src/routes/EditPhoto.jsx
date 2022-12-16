@@ -12,28 +12,29 @@ const EditPhoto = () => {
 
   const editPhoto = (e) => {
     e.preventDefault();
-    // TODO: answer here
-    fetch(`https://gallery-app-server.vercel.app/photos/${id}`, {
+
+    setLoading(true)
+    fetch(`http://localhost:3001/photos/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         imageUrl: imageUrl,
         captions: captions,
-        updatedAt: Date().toString(),
-      })
-      .then((json) => {
-        (json.error ? navigate("/photos") : alert(json?.error));
+        updatedAt: new Date(),
       })
     })
-    
+    .then(res => {res.json();
+      navigate("/photos")})
+    setLoading(false)
+    // TODO: answer here
   };
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://gallery-app-server.vercel.app/photos/${id}`)
-    .then(rsp => rsp.json())
+    fetch(`http://localhost:3001/photos/${id}`)
+    .then(res => res.json())
     .then(json => {
       setImageUrl(json.imageUrl)
       setCaptions(json.captions)

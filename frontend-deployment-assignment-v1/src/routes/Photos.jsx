@@ -11,46 +11,44 @@ const Photos = () => {
   const [error, setError] = useState(null);
 
   const deletePhoto = (id) => {
-    fetch(`https://gallery-app-server.vercel.app/photos/${id}`, {
+    fetch(`http://localhost:3001/photos/${id}`, {
       method: "DELETE",
+      // headers: {
+      //   "Content-Type": "application/json"
+      // }
     })
-    .then(rsp => {
+    .then(res => {
       setPhotos(
         photos.filter(i => i.id !== id)
         );
-      return rsp.json();
+      return res.json();
     });
+    // .then( respon => {setPhotos(photos.map((photos) => 
+    // {if (photos.id != id) {
+    //   return photos
+    // }}
+    // ))
+    // return respon.json()}
+    // )
+    // TODO: answer here
   };
 
   useEffect(() => {
     setLoading(true);
+    fetch(`http://localhost:3001/photos?_sort=id&_order=${sort}&q=${search}`)
+    .then(res => res.json()) 
+    .then(json => {setPhotos(json);
+    setLoading(false)});
     // TODO: answer here
-    if(sort) {
-      fetch(`https://gallery-app-server.vercel.app/photos?_sort=id&_order=${sort}`)
-      .then((rsp) => rsp.json())
-      .then((data1) => {
-        setPhotos(data1);
-        setLoading(false);
-      })
-    } if(submited) {
-      fetch(`https://gallery-app-server.vercel.app/photos?q=${submited}`)
-      .then((rsp) => rsp.json())
-      .then((data1) => {
-        setPhotos(data1);
-        setLoading(false);
-      })
-    }
   }, [sort, submited]);
 
   useEffect(() => {
     setLoading(true);
+    fetch("http://localhost:3001/photos")
+    .then(res => res.json()) 
+    .then(json => {setPhotos(json);
+    setLoading(false)});
     // TODO: answer here
-    fetch('https://gallery-app-server.vercel.app/photos')
-    .then((rsp) => rsp.json())
-    .then((json) => {
-      setPhotos(json);
-      setLoading(false);
-    })
   }, []);
 
   if (error) return <h1 style={{ width: "100%", textAlign: "center", marginTop: "20px" }} >Error!</h1>;
